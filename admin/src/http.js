@@ -3,9 +3,9 @@ import Vue from 'vue'
 import router from './router/index'
 
 const http = axios.create({
-        baseURL: 'http://localhost:3001/admin/api/rest/',
-    })
-    //http.uploadURL = 'http://localhost:3001/admin/api/';
+    baseURL: 'http://localhost:3001/admin/api/rest/',
+})
+http.uploadURL = 'http://localhost:3001/admin/api/';
 
 http.interceptors.request.use(config => {
     if (localStorage.token) {

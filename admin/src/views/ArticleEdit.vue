@@ -4,7 +4,7 @@
     <el-form label-width="120px" @submit.native.prevent="save">
       <el-form-item label="所属分类">
         <el-select v-model="model.categories" multiple >
-          <el-option v-for="item in categories" :key="item._id" :label="item.name" :value="item._id">
+          <el-option v-for="item in categories" :key="item.id" :label="item.name" :value="item.id">
           </el-option>  
         </el-select>
       </el-form-item>

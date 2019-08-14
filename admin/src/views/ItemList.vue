@@ -2,7 +2,7 @@
   <div>
     <h1>物品列表</h1>
     <el-table :data="items" style="width: 100%">
-      <el-table-column prop="_id" label="ID" width="220"></el-table-column>
+      <el-table-column prop="id" label="ID" width="220"></el-table-column>
       <el-table-column prop="name" label="物品名称"></el-table-column>
       <el-table-column prop="icon" label="图标">
         <template slot-scope="scope">
@@ -14,7 +14,7 @@
           <el-button
             type="text"
             size="small"
-            @click="$router.push(`/items/edit/${scope.row._id}`)">编辑</el-button>
+            @click="$router.push(`/items/edit/${scope.row.id}`)">编辑</el-button>
           <el-button @click="remove(scope.row)" type="text" size="small">删除</el-button>
         </template>
       </el-table-column>
@@ -39,7 +39,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(async () => {
-        const res = await this.$http.delete(`/items/${row._id}`);
+        const res = await this.$http.delete(`/items/${row.id}`);
         this.$message({
           type: "success",
           message: "删除成功!"

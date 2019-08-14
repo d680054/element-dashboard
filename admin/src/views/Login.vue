@@ -22,7 +22,7 @@
         loading: false,
         account: {
           username: 'admin',
-          password: '123456'
+          password: '123'
         },
         rules: {
           username: [
@@ -42,14 +42,18 @@
         this.$refs.AccountFrom.validate(async (valid) => {
           if (valid) {
             this.loading = true;
+            try {
             const res = await this.$http.post('http://localhost:3001/admin/api/login', this.account);
-            this.loading = false;
             localStorage.token = res.data.token;
             this.$router.push('/');
             this.$message({
               type:'success',
               message: '登陆成功'
             })
+            }catch(error) {
+              console.error(error);
+            }
+            this.loading = false;
           }
         });
       }

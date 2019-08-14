@@ -1,14 +1,26 @@
-const mongoose = require('mongoose')
+module.exports = dynamoose => {
+    const shortid = require('shortid');
+    const UserSchema = new dynamoose.Schema({
+        id: {
+            type: String,
+            default: shortid.generate,
+            hashKey: true
+        },
+        username: {
+            type: String,
+            index: {
+                global: true,
+                project: true, // ProjectionType: ALL
+                throughput: 1 // read and write are both 5
+            }
+        },
+        password: {
+            type: String,
+            set(val) {
+                return require('bcrypt').hashSync(val, 10);
+            }
+        },
+    })
+    return dynamoose.model('AdminUser', UserSchema);
 
-const schema = new mongoose.Schema({
-    username: { type: String },
-    password: {
-        type: String,
-        select: false,
-        set(val) {
-            return require('bcrypt').hashSync(val, 10);
-        }
-    },
-})
-
-module.exports = mongoose.model('AdminUser', schema);
+}

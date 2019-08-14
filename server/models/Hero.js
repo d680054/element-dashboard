@@ -1,32 +1,39 @@
-const mongoose = require('mongoose')
-
-const schema = new mongoose.Schema({
-    name: { type: String },
-    avatar: { type: String },
-    title: { type: String },
-    categories: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Category' }],
-    scores: {
-        difficult: { type: Number },
-        skills: { type: Number },
-        attack: { type: Number },
-        survive: { type: Number }
-    },
-    skills: [{
-        icon: { type: String },
+module.exports = dynamoose => {
+    const shortid = require('shortid');
+    const schema = new dynamoose.Schema({
+        id: {
+            type: String,
+            default: shortid.generate,
+            hashKey: true
+        },
         name: { type: String },
-        description: { type: String },
-        tip: { type: String }
-    }],
-    items1: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Item' }],
-    items2: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Item' }],
-    usageTips: { type: String },
-    battleTips: { type: String },
-    teamTips: { type: String },
-    partners: [{
-        hero: { type: mongoose.SchemaTypes.ObjectId, ref: 'Hero' },
-        description: { type: String },
-    }]
+        avatar: { type: String },
+        title: { type: String },
+        scores: {
+            difficult: { type: Number },
+            skills: { type: Number },
+            attack: { type: Number },
+            survive: { type: Number }
+        },
+        skills: [{
+            icon: { type: String },
+            name: { type: String },
+            description: { type: String },
+            tip: { type: String }
+        }],
+        usageTips: { type: String },
+        battleTips: { type: String },
+        teamTips: { type: String },
+        categories: [{ type: Array }],
 
-})
+        items1: [{ type: Array }],
+        items2: [{ type: Array }],
 
-module.exports = mongoose.model('Hero', schema);
+        partners: [{
+            hero: { type: Number },
+            description: { type: String },
+        }]
+    })
+
+    return dynamoose.model('Hero', schema);
+}

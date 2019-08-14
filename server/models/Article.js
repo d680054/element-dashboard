@@ -1,9 +1,16 @@
-const mongoose = require('mongoose')
+module.exports = dynamoose => {
+    const shortid = require('shortid');
+    const schema = new dynamoose.Schema({
+        id: {
+            type: String,
+            default: shortid.generate,
+            hashKey: true
+        },
+        //categories: [{ type: dynamoose.SchemaTypes.ObjectId, ref: "Category" }],
+        categories: { type: Array },
+        title: { type: String },
+        body: { type: String },
+    })
 
-const schema = new mongoose.Schema({
-    categories: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Category" }],
-    title: { type: String },
-    body: { type: String },
-})
-
-module.exports = mongoose.model('Article', schema);
+    return dynamoose.model('Article', schema);
+}

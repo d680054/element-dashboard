@@ -6,7 +6,7 @@ app.use(express.json());
 app.use('/uploads', express.static(__dirname + '/uploads'))
 
 require('./routes/admin')(app)
-require('./plugins/db')(app)
+
 
 app.set('secret', 'SHANGHAI');
 

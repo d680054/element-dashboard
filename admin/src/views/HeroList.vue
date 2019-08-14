@@ -2,7 +2,7 @@
   <div>
     <h1>英雄列表</h1>
     <el-table :data="heros" style="width: 100%">
-      <el-table-column prop="_id" label="ID" width="220"></el-table-column>
+      <el-table-column prop="id" label="ID" width="220"></el-table-column>
       <el-table-column prop="name" label="物品名称"></el-table-column>
       <el-table-column prop="title" label="称号"></el-table-column>
       <el-table-column prop="avatar" label="头像">
@@ -15,7 +15,7 @@
           <el-button
             type="text"
             size="small"
-            @click="$router.push(`/heros/edit/${scope.row._id}`)">编辑</el-button>
+            @click="$router.push(`/heros/edit/${scope.row.id}`)">编辑</el-button>
           <el-button @click="remove(scope.row)" type="text" size="small">删除</el-button>
         </template>
       </el-table-column>
@@ -40,7 +40,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(async () => {
-        const res = await this.$http.delete(`/heros/${row._id}`);
+        const res = await this.$http.delete(`/heros/${row.id}`);
         this.$message({
           type: "success",
           message: "删除成功!"

@@ -27,8 +27,8 @@
               <el-option
                 v-for="item in categories"
                 :label="item.name"
-                :value="item._id"
-                :key="item._id"
+                :value="item.id"
+                :key="item.id"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -50,8 +50,8 @@
               <el-option
                 v-for="item in items1"
                 :label="item.name"
-                :value="item._id"
-                :key="item._id"
+                :value="item.id"
+                :key="item.id"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -61,8 +61,8 @@
               <el-option
                 v-for="item in items2"
                 :label="item.name"
-                :value="item._id"
-                :key="item._id"
+                :value="item.id"
+                :key="item.id"
               ></el-option>
             </el-select>
           </el-form-item>

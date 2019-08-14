@@ -2,14 +2,14 @@
   <div>
     <h1>管理员列表</h1>
     <el-table :data="items" style="width: 100%">
-      <el-table-column prop="_id" label="ID" width="220"></el-table-column>
+      <el-table-column prop="id" label="ID" width="220"></el-table-column>
       <el-table-column prop="username" label="管理员"></el-table-column>
       <el-table-column fixed="right" label="操作" width="180">
         <template slot-scope="scope">
           <el-button
             type="text"
             size="small"
-            @click="$router.push(`/admin_users/edit/${scope.row._id}`)">编辑</el-button>
+            @click="$router.push(`/admin_users/edit/${scope.row.id}`)">编辑</el-button>
           <el-button @click="remove(scope.row)" type="text" size="small">删除</el-button>
         </template>
       </el-table-column>
@@ -34,7 +34,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(async () => {
-        const res = await this.$http.delete(`/admin_users/${row._id}`);
+        const res = await this.$http.delete(`/admin_users/${row.id}`);
         this.$message({
           type: "success",
           message: "删除成功!"

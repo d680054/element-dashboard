@@ -3,7 +3,8 @@ module.exports = app => {
     const express = require('express');
     const assert = require('http-assert');
     const jwt = require('jsonwebtoken');
-    const AdminUser = require('../../models/AdminUser');
+    const dynamoose = require('../../plugins/db')(app)
+    const AdminUser = require('../../models/AdminUser')(dynamoose)
     const router = express.Router({
         mergeParams: true
     });
@@ -18,13 +19,11 @@ module.exports = app => {
             assert(id, 401, 'Token is invalid');
         }
 
-        req.user = await AdminUser.findById(id);
+        req.user = await AdminUser.get({ id: id });
         assert(req.user, 401, 'No such user')
 
         await next();
     }
-
-
 
     router.post('/', async(req, res) => {
         const model = await req.Model.create(req.body);
@@ -36,29 +35,29 @@ module.exports = app => {
         if (req.Model.modelName === 'Category') {
             queryOptions.populate = 'parent'
         }
-        const items = await req.Model.find().setOptions(queryOptions).limit(10);
+        const items = await req.Model.scan().exec();
         res.send(items);
     })
 
     router.get('/:id', async(req, res) => {
-        const item = await req.Model.findById(req.params.id);
+        const item = await req.Model.get({ id: req.params.id });
         res.send(item);
     })
 
     router.put('/:id', async(req, res) => {
-        const item = await req.Model.findByIdAndUpdate(req.params.id, req.body);
+        const item = await req.Model.batchPut([req.body]);
         res.send(item);
     })
 
     router.delete('/:id', async(req, res) => {
-        await req.Model.findByIdAndDelete(req.params.id);
+        await req.Model.delete({ id: req.params.id });
         res.sendStatus(202);
     })
 
 
     app.use('/admin/api/rest/:resource', auth, async(req, res, next) => {
         const ModelName = require('inflection').classify(req.params.resource);
-        req.Model = require(`../../models/${ModelName}`);
+        req.Model = require(`../../models/${ModelName}`)(dynamoose);
         next();
     }, router);
 
@@ -74,21 +73,20 @@ module.exports = app => {
     })
 
     app.post('/admin/api/login', async(req, res) => {
-        const { username, password } = req.body;
 
-        const user = await AdminUser.findOne({ username }).select('+password');
+        const { username, password } = req.body;
+        const user = await AdminUser.queryOne({ 'username': { eq: username } }).exec();
         assert(user, 401, 'authentication failed(User)');
 
         const isValid = require('bcrypt').compareSync(password, user.password);
         assert(isValid, 401, 'authentication failed(Password)')
 
-        const token = jwt.sign({ id: String(user._id) }, app.get('secret'));
+        const token = jwt.sign({ id: String(user.id) }, app.get('secret'));
         res.send({
             msg: "",
             token,
             user: user.username
         })
-
     })
 
 
