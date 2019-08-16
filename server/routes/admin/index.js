@@ -55,7 +55,7 @@ module.exports = app => {
     })
 
 
-    app.use('/admin/api/rest/:resource', auth, async(req, res, next) => {
+    app.use('/admin/api/rest/:resource', async(req, res, next) => {
         const ModelName = require('inflection').classify(req.params.resource);
         req.Model = require(`../../models/${ModelName}`)(dynamoose);
         next();
@@ -68,7 +68,7 @@ module.exports = app => {
 
     app.post('/admin/api/upload', upload.single('file'), async(req, res) => {
         const file = req.file;
-        file.url = `http://localhost:3001/uploads/${file.filename}`;
+        file.url = `http://localhost:3000/uploads/${file.filename}`;
         res.send(file);
     })
 

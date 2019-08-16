@@ -1,4 +1,4 @@
-@url=http://localhost:3001/admin/api/rest
+@url=http://localhost:3000/admin/api/rest
 @Auth=Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlNhNlpCdWlzNSIsImlhdCI6MTU2NTcwMDEwNX0.sNhv4RU2kRls8WzpTxqhBNNnRcCjmDp4F5aXdccsJRA
 
 ###List Admin
@@ -16,4 +16,8 @@ Get {{url}}/items
 
 ###List Category
 GET {{url}}/categories HTTP/1.1
+{{Auth}}
+
+###List heros
+GET {{url}}/heros
 {{Auth}}
